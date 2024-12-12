@@ -5,8 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,23 +20,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import codelounge.app.com.ui.theme.CodeLoungeTheme
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             CodeLoungeTheme {
-                Combine()
+                val navController = rememberNavController()
+                MainNavGraph(navController = navController)
             }
         }
     }
 }
 
-
 @Composable
-fun Combine() {
+fun Combine(navController: NavController) {
     val selectedIndex = remember { mutableStateOf(0) }
 
     Scaffold(
@@ -47,7 +52,7 @@ fun Combine() {
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            LifecycleList()
+            LifecycleList(navController = navController)
         }
     }
 }
@@ -61,8 +66,14 @@ fun AppBar(){
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                    Text("개발의 정석")
-                }
+                    Row {
+                        Column {
+                            Text("개발의 정석")
+                            Text("Android", style = MaterialTheme.typography.bodySmall)
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                    }
+                },
             )
 }
 
@@ -80,7 +91,7 @@ fun AppBarPreview(){
 @Composable
 fun CombinePreview(){
     CodeLoungeTheme {
-        Combine()
+        Combine(navController = rememberNavController())
     }
 }
 
