@@ -16,14 +16,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import codelounge.app.com.ui.theme.BackgroundColor
 import codelounge.app.com.ui.theme.CodeLoungeTheme
+import codelounge.app.com.ui.theme.WhiteTextColor
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +42,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Combine(navController: NavController) {
-    val selectedIndex = remember { mutableStateOf(0) }
+    val selectedIndex = remember { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = { AppBar() },
@@ -62,14 +65,13 @@ fun Combine(navController: NavController) {
 fun AppBar(){
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    containerColor = BackgroundColor,
+                    titleContentColor = WhiteTextColor,
                 ),
                 title = {
                     Row {
                         Column {
-                            Text("개발의 정석")
-                            Text("Android", style = MaterialTheme.typography.bodySmall)
+                            Text("Android")
                         }
                         Spacer(modifier = Modifier.width(10.dp))
                     }

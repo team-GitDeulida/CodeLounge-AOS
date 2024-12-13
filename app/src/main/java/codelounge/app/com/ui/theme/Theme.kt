@@ -1,7 +1,6 @@
 package codelounge.app.com.ui.theme
 
 import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -21,32 +20,32 @@ private val LightColors = lightColorScheme(
 )
 
 private val DarkColors = darkColorScheme(
-    primary = Teal200,
-    onPrimary = Black,
-    background = Black,
-    onBackground = White
+    primary = LineBackgroundColor,
+    onPrimary = CustomGreenColor,
+    background = BackgroundColor,
+    onBackground = WhiteTextColor,
 )
 
 @Composable
-fun CodeLoungeTheme(
-    useDynamicColors: Boolean = true,
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
-    val colors = when {
-        // Android 12(API 31) 이상에서 동적 테마 활성화
-        useDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> DarkColors
-        else -> LightColors
-    }
+        fun CodeLoungeTheme(
+            useDynamicColors: Boolean = false,
+            darkTheme: Boolean = true,
+            content: @Composable () -> Unit
+        ) {
+            val colors = when {
+                // Android 12(API 31) 이상에서 동적 테마 활성화
+                useDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                    val context = LocalContext.current
+                    if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+                }
+                darkTheme -> DarkColors
+                else -> LightColors
+            }
 
-    MaterialTheme(
-        colorScheme = colors,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
-    )
-}
+            MaterialTheme(
+                colorScheme = colors,
+                typography = Typography,
+                shapes = Shapes,
+                content = content
+            )
+        }

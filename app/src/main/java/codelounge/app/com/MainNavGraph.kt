@@ -7,7 +7,8 @@ import androidx.navigation.compose.composable
 
 @Composable
 fun MainNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") { loginActivity(navController) }
         composable("home") { Combine(navController) }
         composable("listContents") { ListContents(navController) }
     }

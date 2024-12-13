@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import codelounge.app.com.ui.theme.BackgroundColor
+import codelounge.app.com.ui.theme.WhiteTextColor
 
 @Composable
 fun ListContents(navController: NavController) {
@@ -40,17 +42,11 @@ fun ListContents(navController: NavController) {
 fun ContentsAppBar(onBackClick: () -> Unit) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary,
+            containerColor = BackgroundColor,
+            titleContentColor = WhiteTextColor,
         ),
         title = {
-            Row {
-                Column {
-            Text("개발의 정석")
-                Text("Android", style = MaterialTheme.typography.bodySmall)
-                }
-                Spacer(modifier = Modifier.width(10.dp))
-            }
+                Text("Android")
         },
         navigationIcon = {
             IconButton(onClick = onBackClick) {

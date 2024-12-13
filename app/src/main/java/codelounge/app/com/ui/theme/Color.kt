@@ -14,3 +14,8 @@ val Purple500 = Color(0xFF6200EE)
 val Teal200 = Color(0xFF03DAC5)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
+
+val BackgroundColor = Color(0xFF161717)
+val WhiteTextColor = Color(0xFFF1F1F1)
+val LineBackgroundColor = Color(0xFF242525)
+val CustomGreenColor = Color(0xFF78D88A)
