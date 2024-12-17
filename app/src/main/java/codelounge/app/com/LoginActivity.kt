@@ -51,9 +51,9 @@ fun loginActivity(navController: NavController) {
 fun googleLoginButton(navController: NavController) {
     Card(
         modifier = Modifier
-            .padding(horizontal = 60.dp)
+            .padding(horizontal = 50.dp)
             .fillMaxWidth()
-            .height(40.dp)
+            .height(50.dp)
             .clickable { navController.navigate("home") },
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
@@ -65,7 +65,7 @@ fun googleLoginButton(navController: NavController) {
                 painter = painterResource(id = R.drawable.google_logo),
                 contentDescription = "Google Logo",
                 modifier = Modifier
-                    .height(18.dp)
+                    .height(25.dp)
                     .padding(start = 30.dp)
             )
             Text(
@@ -81,9 +81,9 @@ fun googleLoginButton(navController: NavController) {
 fun githubLoginButton(navController: NavController) {
     Card(
         modifier = Modifier
-            .padding(horizontal = 60.dp)
+            .padding(horizontal = 50.dp)
             .fillMaxWidth()
-            .height(40.dp)
+            .height(50.dp)
             .clickable { navController.navigate("home") },
         colors = CardDefaults.cardColors(containerColor = Color.Black)
     ) {
@@ -95,7 +95,7 @@ fun githubLoginButton(navController: NavController) {
                 painter = painterResource(id = R.drawable.github_mark),
                 contentDescription = "Github Logo",
                 modifier = Modifier
-                    .height(18.dp)
+                    .height(25.dp)
                     .padding(start = 30.dp)
             )
             Text(
