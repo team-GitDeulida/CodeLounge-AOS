@@ -17,6 +17,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,13 +49,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Combine(navController: NavController, firebaseData: Map<String, Any?>) {
-    val selectedIndex = remember { mutableIntStateOf(0) }
+    val selectedIndex = rememberSaveable { mutableIntStateOf(0) }
     val algorithmsData = firebaseData.filter { it.key == "Algorithms" }
     val kotlinData = firebaseData.filter { it.key == "Kotlin" }
     val operatingsystemsData = firebaseData.filter { it.key == "OperatingSystems" }
     val swiftuiData = firebaseData.filter { it.key == "SwiftUI" }
     val uikitData = firebaseData.filter { it.key == "UIKit" }
-
 
     Scaffold(
         topBar = { AppBar(selectedIndex.value) },
@@ -68,15 +68,16 @@ fun Combine(navController: NavController, firebaseData: Map<String, Any?>) {
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             when (selectedIndex.value) {
-                0 -> LifeCycleList(navController = navController ,firebaseData = algorithmsData + operatingsystemsData,"CS")
-                1 -> LifeCycleList(navController = navController ,firebaseData = kotlinData,"Android")
-                2 -> LifeCycleList(navController = navController ,firebaseData = swiftuiData,"iOS")
-                3 -> LifeCycleList(navController = navController,firebaseData = uikitData, "Frontend")
-                else -> LifeCycleList(navController = navController ,firebaseData = algorithmsData, "CS")
+                0 -> LifeCycleList(navController = navController, firebaseData = algorithmsData + operatingsystemsData, "CS")
+                1 -> LifeCycleList(navController = navController, firebaseData = kotlinData, "Android")
+                2 -> LifeCycleList(navController = navController, firebaseData = swiftuiData, "iOS")
+                3 -> LifeCycleList(navController = navController, firebaseData = uikitData, "Frontend")
+                else -> LifeCycleList(navController = navController, firebaseData = algorithmsData, "CS")
             }
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

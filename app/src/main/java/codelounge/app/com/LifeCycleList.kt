@@ -31,18 +31,18 @@ fun LifeCycleList(navController: NavController, firebaseData: Map<String, Any?>,
                     .padding(start = 16.dp)
             )
             val nestedData = firebaseData[title] as? Map<String, Map<String, Any?>>
-                    nestedData?.let {
-                        Column(modifier = Modifier.padding(8.dp)) {
-                            it.values.forEach { item ->
-                                Text(
-                                    text = item["title"] as? String ?: "",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp)
-                                        .clickable { navController.navigate("listContents/${item["title"]}/${item["content"]}/$appbar/$title") }
-                                )
-                                HorizontalDivider()
-                            }
+            nestedData?.let {
+                Column(modifier = Modifier.padding(8.dp)) {
+                    it.values.forEach { item ->
+                        Text(
+                            text = item["title"] as? String ?: "",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                                .clickable { navController.navigate("listContents/${item["title"]}/${item["content"]}/$appbar/$title") }
+                        )
+                        HorizontalDivider()
+                    }
                 }
             }
         }

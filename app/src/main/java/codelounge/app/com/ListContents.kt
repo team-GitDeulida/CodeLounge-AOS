@@ -24,12 +24,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import codelounge.app.com.ui.theme.BackgroundColor
+import codelounge.app.com.ui.theme.CustomGreenColor
 import codelounge.app.com.ui.theme.WhiteTextColor
 
 @Composable
 fun ListContents(navController: NavController, title: String , content: String, appbar: String, parent: String) {
     Scaffold(
-        topBar = { ContentsAppBar(onBackClick = { navController.popBackStack() },appbar) }
+        topBar = { ContentsAppBar(onBackClick = { navController.navigateUp() }, appbar) }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
         Contents(title = title, content = content,parent = parent)
@@ -49,7 +50,9 @@ fun ContentsAppBar(onBackClick: () -> Unit, appbar: String) {
             Text(appbar)
         },
         navigationIcon = {
-            IconButton(onClick = onBackClick) {
+            IconButton(onClick = {
+                onBackClick()
+            }) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back")
             }
         }
@@ -60,11 +63,11 @@ fun Contents(title: String, content: String, parent: String) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall ,
         )
         Text(
             text = parent,
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge + MaterialTheme.typography.bodyLarge.copy(color = CustomGreenColor),
             modifier = Modifier.padding(top = 8.dp)
         )
         HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(vertical = 16.dp))
