@@ -11,7 +11,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -26,11 +25,16 @@ import androidx.navigation.compose.rememberNavController
 import codelounge.app.com.ui.theme.BackgroundColor
 import codelounge.app.com.ui.theme.CodeLoungeTheme
 import codelounge.app.com.ui.theme.WhiteTextColor
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : ComponentActivity() {
+    private lateinit var database: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        database = FirebaseDatabase.getInstance().reference
         setContent {
             CodeLoungeTheme {
                 val navController = rememberNavController()
@@ -40,12 +44,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun Combine(navController: NavController) {
     val selectedIndex = remember { mutableIntStateOf(0) }
 
     Scaffold(
-        topBar = { AppBar() },
+        topBar = { AppBar(selectedIndex.value) },
         bottomBar = {
             BottomNavigationBar(
                 items = items,
@@ -55,28 +60,42 @@ fun Combine(navController: NavController) {
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            LifecycleList(navController = navController)
+            when (selectedIndex.value) {
+                0 -> CsLifecycleList()
+                1 -> AndroidLifecycleList(navController = navController)
+                2 -> IosLiftecycleList()
+                3 -> FrontLifecycleList()
+                else -> CsLifecycleList()
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(){
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = BackgroundColor,
-                    titleContentColor = WhiteTextColor,
-                ),
-                title = {
-                    Row {
-                        Column {
-                            Text("Android")
-                        }
-                        Spacer(modifier = Modifier.width(10.dp))
-                    }
-                },
-            )
+fun AppBar(selectedIndex: Int) {
+    val title = when (selectedIndex) {
+        0 -> "CS"
+        1 -> "Android"
+        2 -> "iOS"
+        3 -> "Frontend"
+        else -> "CS"
+    }
+
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = BackgroundColor,
+            titleContentColor = WhiteTextColor,
+        ),
+        title = {
+            Row {
+                Column {
+                    Text(title)
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+        },
+    )
 }
 
 
@@ -84,7 +103,7 @@ fun AppBar(){
 @Composable
 fun AppBarPreview(){
     CodeLoungeTheme {
-        AppBar()
+        AppBar(1)
     }
 }
 
