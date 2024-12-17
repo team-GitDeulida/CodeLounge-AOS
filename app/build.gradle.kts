@@ -62,6 +62,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.database.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.androidx.material.icons.extended)
     implementation (libs.androidx.navigation.compose)
