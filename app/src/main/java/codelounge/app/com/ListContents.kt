@@ -27,26 +27,26 @@ import codelounge.app.com.ui.theme.BackgroundColor
 import codelounge.app.com.ui.theme.WhiteTextColor
 
 @Composable
-fun ListContents(navController: NavController) {
+fun ListContents(navController: NavController, title: String , content: String, appbar: String, parent: String) {
     Scaffold(
-        topBar = { ContentsAppBar(onBackClick = { navController.popBackStack() }) }
+        topBar = { ContentsAppBar(onBackClick = { navController.popBackStack() },appbar) }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-        Contents()
+        Contents(title = title, content = content,parent = parent)
     }
 }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentsAppBar(onBackClick: () -> Unit) {
+fun ContentsAppBar(onBackClick: () -> Unit, appbar: String) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = BackgroundColor,
             titleContentColor = WhiteTextColor,
         ),
         title = {
-                Text("Android")
+            Text(appbar)
         },
         navigationIcon = {
             IconButton(onClick = onBackClick) {
@@ -55,22 +55,21 @@ fun ContentsAppBar(onBackClick: () -> Unit) {
         }
     )
 }
-
 @Composable
-fun Contents() {
+fun Contents(title: String, content: String, parent: String) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
-            text = "Activity에 대해서 설명해주세요.",
+            text = title,
             style = MaterialTheme.typography.headlineSmall
         )
         Text(
-            text = "AOS",
+            text = parent,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 8.dp)
         )
         HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(vertical = 16.dp))
         Text(
-            text = "Activity는 안드로이드 앱의 구성 요소 중 하나로, 사용자 인터페이스를 제공합니다. 사용자가 앱에서 수행하는 모든 작업은 Activity에서 발생합니다. Activity는 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공하며, 사용자가 앱에서 수행하는 작업을 나타내는 화면을 제공합니다.",
+            text = content,
             style = MaterialTheme.typography.bodyMedium
         )
         HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(vertical = 16.dp))
@@ -81,14 +80,21 @@ fun Contents() {
 @Composable
 fun ContentsAppBarPreview(){
     CodeLoungeTheme {
-        ContentsAppBar(onBackClick = {})
+        ContentsAppBar(
+            onBackClick = {},
+            appbar = TODO()
+        )
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun ContentsPreview(){
     CodeLoungeTheme {
-        Contents()
+        Contents(
+            title = TODO(),
+            content = TODO(),
+            parent = TODO()
+        )
     }
 }
 
@@ -96,7 +102,13 @@ fun ContentsPreview(){
 @Composable
 fun ListContentsPreview(){
     CodeLoungeTheme {
-        ListContents(navController = NavController(LocalContext.current))
+        ListContents(
+            navController = NavController(LocalContext.current),
+            title = "Sample Title",
+            content = "Sample Content",
+            appbar = TODO(),
+            parent = TODO()
+        )
     }
 }
 

@@ -68,11 +68,11 @@ fun Combine(navController: NavController, firebaseData: Map<String, Any?>) {
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             when (selectedIndex.value) {
-                0 -> LifeCycleList(navController = navController ,firebaseData = algorithmsData + operatingsystemsData)
-                1 -> LifeCycleList(navController = navController ,firebaseData = kotlinData)
-                2 -> LifeCycleList(navController = navController ,firebaseData = swiftuiData)
-                3 -> LifeCycleList(navController = navController,firebaseData = uikitData)
-                else -> LifeCycleList(navController = navController ,firebaseData = algorithmsData)
+                0 -> LifeCycleList(navController = navController ,firebaseData = algorithmsData + operatingsystemsData,"CS")
+                1 -> LifeCycleList(navController = navController ,firebaseData = kotlinData,"Android")
+                2 -> LifeCycleList(navController = navController ,firebaseData = swiftuiData,"iOS")
+                3 -> LifeCycleList(navController = navController,firebaseData = uikitData, "Frontend")
+                else -> LifeCycleList(navController = navController ,firebaseData = algorithmsData, "CS")
             }
         }
     }

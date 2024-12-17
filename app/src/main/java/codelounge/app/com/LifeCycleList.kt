@@ -19,7 +19,7 @@ import codelounge.app.com.ui.theme.CodeLoungeTheme
 import codelounge.app.com.ui.theme.CustomGreenColor
 
 @Composable
-fun LifeCycleList(navController: NavController, firebaseData: Map<String, Any?>) {
+fun LifeCycleList(navController: NavController, firebaseData: Map<String, Any?>, appbar: String) {
     val titles = remember { firebaseData.keys.toList() }
     LazyColumn {
         items(titles) { title ->
@@ -39,7 +39,7 @@ fun LifeCycleList(navController: NavController, firebaseData: Map<String, Any?>)
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(16.dp)
-                                        .clickable { navController.navigate("listContents") }
+                                        .clickable { navController.navigate("listContents/${item["title"]}/${item["content"]}/$appbar/$title") }
                                 )
                                 HorizontalDivider()
                             }
@@ -57,7 +57,8 @@ fun ListPreview() {
     CodeLoungeTheme {
         LifeCycleList(
             firebaseData = mapOf("Algorithm1" to "Description1", "Algorithm2" to "Description2"),
-            navController = TODO()
+            navController = TODO(),
+            appbar = TODO()
         )
     }
 }
