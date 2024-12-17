@@ -38,7 +38,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             CodeLoungeTheme {
                 val navController = rememberNavController()
-                MainNavGraph(navController = navController)
+                val firebaseData = FirebaseData(database)
+                MainNavGraph(navController = navController, firebaseData = firebaseData)
             }
         }
     }
@@ -46,8 +47,14 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun Combine(navController: NavController) {
+fun Combine(navController: NavController, firebaseData: Map<String, Any?>) {
     val selectedIndex = remember { mutableIntStateOf(0) }
+    val algorithmsData = firebaseData.filter { it.key == "Algorithms" }
+    val kotlinData = firebaseData.filter { it.key == "Kotlin" }
+    val operatingsystemsData = firebaseData.filter { it.key == "OperatingSystems" }
+    val swiftuiData = firebaseData.filter { it.key == "SwiftUI" }
+    val uikitData = firebaseData.filter { it.key == "UIKit" }
+
 
     Scaffold(
         topBar = { AppBar(selectedIndex.value) },
@@ -61,11 +68,11 @@ fun Combine(navController: NavController) {
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             when (selectedIndex.value) {
-                0 -> CsLifecycleList()
-                1 -> AndroidLifecycleList(navController = navController)
-                2 -> IosLiftecycleList()
-                3 -> FrontLifecycleList()
-                else -> CsLifecycleList()
+                0 -> LifeCycleList(navController = navController ,firebaseData = algorithmsData + operatingsystemsData)
+                1 -> LifeCycleList(navController = navController ,firebaseData = kotlinData)
+                2 -> LifeCycleList(navController = navController ,firebaseData = swiftuiData)
+                3 -> LifeCycleList(navController = navController,firebaseData = uikitData)
+                else -> LifeCycleList(navController = navController ,firebaseData = algorithmsData)
             }
         }
     }
@@ -112,7 +119,7 @@ fun AppBarPreview(){
 @Composable
 fun CombinePreview(){
     CodeLoungeTheme {
-        Combine(navController = rememberNavController())
+        Combine(navController = rememberNavController(), firebaseData = mapOf("Algorithm1" to listOf("Description1"), "Algorithm2" to listOf("Description2")))
     }
 }
 
