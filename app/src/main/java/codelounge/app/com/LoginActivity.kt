@@ -54,7 +54,7 @@ fun googleLoginButton(navController: NavController) {
             .padding(horizontal = 60.dp)
             .fillMaxWidth()
             .height(40.dp)
-            .clickable { navController.navigate("mainActivity") },
+            .clickable { navController.navigate("home") },
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Row(
@@ -84,7 +84,7 @@ fun githubLoginButton(navController: NavController) {
             .padding(horizontal = 60.dp)
             .fillMaxWidth()
             .height(40.dp)
-            .clickable { navController.navigate("mainActivity") },
+            .clickable { navController.navigate("home") },
         colors = CardDefaults.cardColors(containerColor = Color.Black)
     ) {
         Row(
