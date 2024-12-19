@@ -49,8 +49,8 @@ fun LifeCycleListScreen(
                             .fillMaxWidth()
                             .padding(start = 16.dp, top = 8.dp, bottom = 4.dp)
                     )
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        section.items.forEach { item ->
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        section.items.asReversed().forEach { item ->
                             Text(
                                 text = item.title,
                                 style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),

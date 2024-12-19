@@ -37,7 +37,7 @@ class FirebaseViewModel(private val repository: FirebaseRepository) : ViewModel(
                     Log.e("FirebaseViewModel", "Error fetching data: ${exception.message}")
                 }
                 .collect { data ->
-                    _firebaseData.value = data
+                    _firebaseData.value = data.toSortedMap(reverseOrder())
                     _isLoading.value = false
                     isDataLoaded = true
                 }

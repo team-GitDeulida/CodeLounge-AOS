@@ -41,7 +41,7 @@ fun ContentsDetails(content: String) {
         }
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column() {
         HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(vertical = 16.dp))
         Text(
             text = annotatedText,
