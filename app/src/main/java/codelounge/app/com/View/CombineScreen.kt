@@ -1,4 +1,3 @@
-// CombineScreen.kt
 package codelounge.app.com.View
 
 import androidx.compose.foundation.layout.Column
@@ -8,55 +7,100 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import codelounge.app.com.ViewModel.BottomNavViewModel
 import codelounge.app.com.ViewModel.FirebaseViewModel
+import codelounge.app.com.ViewModel.NavigationViewModel
 
 @Composable
 fun CombineScreen(
-    navController: NavHostController,
-    viewModel: FirebaseViewModel = viewModel()
+    firebaseViewModel: FirebaseViewModel = viewModel(),
+    navigationViewModel: NavigationViewModel = viewModel()
 ) {
-    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
+    val topNavController = rememberNavController()
+    val navBackStackEntry by topNavController.currentBackStackEntryAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadFirebaseData()
+        firebaseViewModel.loadFirebaseData()
     }
 
-    val firebaseData by viewModel.firebaseData.collectAsState()
-
-    val filteredData = remember(firebaseData, selectedIndex) {
-        when (selectedIndex) {
-            0 -> firebaseData.filterKeys { it == "Algorithms" }
-            1 -> firebaseData.filterKeys { it == "Kotlin" }
-            2 -> firebaseData.filterKeys { it in listOf("SwiftUI", "UIKit") }
-            3 -> firebaseData.filterKeys { it in listOf("HTML", "CSS", "JavaScript") }
-            else -> firebaseData // No filtering, use all data
-        }
-    }
+    val firebaseData by firebaseViewModel.firebaseData.collectAsState()
+    val selectedIndex by navigationViewModel.selectedIndex.collectAsState()
 
     Scaffold(
-        topBar = { AppBar(selectedIndex) },
+        topBar = {
+            when (navBackStackEntry?.destination?.route) {
+                "listContents/{title}/{content}" -> {
+                    val title = navBackStackEntry?.arguments?.getString("title") ?: ""
+                    ContentsAppBar(navController = topNavController, title = title)
+                }
+                else -> AppBar(selectedIndex = selectedIndex)
+            }
+        },
         bottomBar = {
             BottomNavigationBar(
                 items = BottomNavViewModel().items,
                 selectedIndex = selectedIndex,
-                onItemSelected = { selectedIndex = it },
+                onItemSelected = { index ->
+                    navigationViewModel.selectIndex(index)
+                    when (index) {
+                        0 -> topNavController.navigate("lifeCycleList")
+                        1 -> topNavController.navigate("kotlinList")
+                        2 -> topNavController.navigate("swiftUIList")
+                        3 -> topNavController.navigate("frontendList")
+                    }
+                },
             )
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            LifeCycleListScreen(
-                navController = navController,
-                firebaseData = filteredData,
-                appbar = when (selectedIndex) {
-                    0 -> "CS"
-                    1 -> "Android"
-                    2 -> "iOS"
-                    3 -> "Frontend"
-                    else -> "CS"
+            NavHost(navController = topNavController, startDestination = "lifeCycleList") {
+                composable("lifeCycleList") {
+                    LifeCycleListScreen(
+                        navController = topNavController,
+                        firebaseData = firebaseData.filterKeys { it == "Algorithms" }
+                    )
                 }
-            )
+                composable("kotlinList") {
+                    LifeCycleListScreen(
+                        navController = topNavController,
+                        firebaseData = firebaseData.filterKeys { it == "Kotlin" }
+                    )
+                }
+                composable("swiftUIList") {
+                    LifeCycleListScreen(
+                        navController = topNavController,
+                        firebaseData = firebaseData.filterKeys { it in listOf("SwiftUI", "UIKit") }
+                    )
+                }
+                composable("frontendList") {
+                    LifeCycleListScreen(
+                        navController = topNavController,
+                        firebaseData = firebaseData.filterKeys { it in listOf("HTML", "CSS", "JavaScript") }
+                    )
+                }
+                composable(
+                    route = "listContents/{title}/{content}",
+                    arguments = listOf(
+                        navArgument("title") { type = NavType.StringType },
+                        navArgument("content") { type = NavType.StringType },
+                    )
+                ) { backStackEntry ->
+                    val title = backStackEntry.arguments?.getString("title") ?: ""
+                    val content = backStackEntry.arguments?.getString("content") ?: ""
+
+                    ListContentsScreen(
+                        title = title,
+                        content = content
+                    )
+                }
+            }
         }
     }
+
 }

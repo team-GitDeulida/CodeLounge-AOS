@@ -15,13 +15,13 @@ import codelounge.app.com.theme.WhiteTextColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContentsAppBar(navController: NavController, appbar: String) {
+fun ContentsAppBar(navController: NavController, title: String) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = BackgroundColor,
             titleContentColor = WhiteTextColor,
         ),
-        title = { Text(appbar) },
+        title = { Text(title) },
         navigationIcon = {
             IconButton(onClick = { navController.navigateUp() }) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back")

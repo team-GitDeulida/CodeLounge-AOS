@@ -26,8 +26,7 @@ import codelounge.app.com.theme.CustomGreenColor
 fun LifeCycleListScreen(
     navController: NavController,
     viewModel: LifeCycleViewModel = viewModel(),
-    firebaseData: Map<String, Any?>,
-    appbar: String
+    firebaseData: Map<String, Any?>
 ) {
     LaunchedEffect(firebaseData) {
         viewModel.loadData(firebaseData)
@@ -59,8 +58,7 @@ fun LifeCycleListScreen(
                                     .fillMaxWidth()
                                     .padding(16.dp)
                                     .clickable {
-                                        navController.navigate("listContents/${item.title}/${item.content}/$appbar/${section.sectionTitle}")
-                                        Log.e("LifeCycleListScreen", "title: ${item.title}, content: ${item.content}, parent: ${section.sectionTitle}")
+                                        navController.navigate("listContents/${item.title}/${item.content}")
                                     }
                             )
                             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
