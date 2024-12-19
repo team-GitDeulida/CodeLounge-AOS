@@ -1,12 +1,8 @@
-package codelounge.app.com
+package codelounge.app.com.View
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,36 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import codelounge.app.com.ui.theme.BackgroundColor
+import codelounge.app.com.R
 
 @Composable
-fun loginActivity(navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxSize().background(BackgroundColor),
-        verticalArrangement = Arrangement.SpaceBetween, // 요소 간의 간격을 화면 전체로 분배
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.weight(2.5f)) // 상단 여백 채우기
-
-        Text("Code Lounge", fontSize = 50.sp, color = Color.White) // 화면 중간에 유지
-
-        Spacer(modifier = Modifier.weight(3f)) // Text 아래 공간 채우기
-
-        githubLoginButton(navController = navController) // 하단에 배치
-        Spacer(modifier = Modifier.height(10.dp))
-        googleLoginButton(navController = navController) // 하단에 배치
-        Spacer(modifier = Modifier.weight(1f))
-    }
-}
-
-
-@Composable
-fun googleLoginButton(navController: NavController) {
+fun GoogleLoginButton(navController: NavController) {
     Card(
         modifier = Modifier
             .padding(horizontal = 50.dp)
@@ -68,17 +40,13 @@ fun googleLoginButton(navController: NavController) {
                     .height(25.dp)
                     .padding(start = 30.dp)
             )
-            Text(
-                text = "google 계정으로 로그인",
-                modifier = Modifier
-                    .padding(start = 30.dp)
-            )
+            Text(text = "Google로 로그인", modifier = Modifier.padding(start = 30.dp))
         }
     }
 }
 
 @Composable
-fun githubLoginButton(navController: NavController) {
+fun GithubLoginButton(navController: NavController) {
     Card(
         modifier = Modifier
             .padding(horizontal = 50.dp)
@@ -99,29 +67,10 @@ fun githubLoginButton(navController: NavController) {
                     .padding(start = 30.dp)
             )
             Text(
-                text = "github 계정으로 로그인",
+                text = "Github로 로그인",
                 color = Color.White,
-                modifier = Modifier
-                    .padding(start = 30.dp)
+                modifier = Modifier.padding(start = 30.dp)
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginPreview() {
-    loginActivity(navController = rememberNavController())
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GoogleLoginButtonPreview() {
-    googleLoginButton(navController = rememberNavController())
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GithubLoginButtonPreview() {
-    githubLoginButton(navController = rememberNavController())
 }

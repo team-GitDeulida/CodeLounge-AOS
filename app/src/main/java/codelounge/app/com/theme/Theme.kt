@@ -1,4 +1,4 @@
-package codelounge.app.com.ui.theme
+package codelounge.app.com.theme
 
 import android.os.Build
 import androidx.compose.material3.MaterialTheme

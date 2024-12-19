@@ -1,4 +1,4 @@
-package codelounge.app.com.ui.theme
+package codelounge.app.com.theme
 
 import androidx.compose.ui.graphics.Color
 
