@@ -69,7 +69,7 @@ fun CombineScreen(
                 composable("kotlinList") {
                     LifeCycleListScreen(
                         navController = topNavController,
-                        firebaseData = firebaseData.filterKeys { it == "Kotlin" }
+                        firebaseData = firebaseData.filterKeys { it in listOf("Kotlin","Android Component") }
                     )
                 }
                 composable("swiftUIList") {
