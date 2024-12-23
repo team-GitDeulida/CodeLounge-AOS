@@ -1,52 +1,146 @@
 package codelounge.app.com.View
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import codelounge.app.com.theme.CustomGreenColor
 
 @Composable
 fun ContentsDetails(content: String) {
-    val annotatedText = buildAnnotatedString {
-        var startIndex = 0
-        while (startIndex < content.length) {
-            val startTag = content.indexOf("**", startIndex)
-            if (startTag == -1) {
-                // 태그가 더 이상 없으면 나머지 텍스트 추가
-                append(content.substring(startIndex))
-                break
-            }
-            val endTag = content.indexOf("**", startTag + 2)
-            if (endTag == -1) {
-                // 닫는 태그가 없으면 나머지 텍스트 추가
-                append(content.substring(startIndex))
-                break
-            }
-            // 태그 앞의 텍스트 추가
-            append(content.substring(startIndex, startTag))
-            // 태그 안의 텍스트에 스타일 적용
-            withStyle(style = SpanStyle(color = CustomGreenColor) + MaterialTheme.typography.headlineSmall.toSpanStyle()) {
-                append(content.substring(startTag + 2, endTag))
-            }
-            // 다음 인덱스로 이동
-            startIndex = endTag + 2
-        }
-    }
+    Column(modifier = Modifier.padding(16.dp)) {
+        val lines = content.lines()
+        var insideCodeBlock = false
+        var languageTag = ""
+        val codeBlockContent = StringBuilder()
 
-    Column() {
-        HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(vertical = 16.dp))
-        Text(
-            text = annotatedText,
-            style = MaterialTheme.typography.bodyMedium
-        )
-        HorizontalDivider(thickness = 2.dp, modifier = Modifier.padding(vertical = 16.dp))
+        lines.forEachIndexed { index, line ->
+            val processedLine = line.replace("\\n", "\n")
+
+            when {
+                processedLine.startsWith("```") -> {
+                    if (insideCodeBlock) {
+                        // 마지막 줄바꿈 제거
+                        if (codeBlockContent.isNotEmpty() && codeBlockContent.last() == '\n') {
+                            codeBlockContent.setLength(codeBlockContent.length - 1)
+                        }
+                        if (languageTag.isNotEmpty()) {
+                            Text(
+                                text = "$languageTag code",
+                                style = MaterialTheme.typography.bodySmall.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp)
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                text = codeBlockContent.toString(),
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                                    fontSize = 14.sp,
+                                    lineHeight = 20.sp
+                                ),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        insideCodeBlock = false
+                        languageTag = ""
+                        codeBlockContent.clear()
+                    } else {
+                        insideCodeBlock = true
+                        languageTag = processedLine.removePrefix("```").trim()
+                    }
+                }
+
+                insideCodeBlock -> {
+                    codeBlockContent.append(processedLine).append("\n")
+                }
+
+                else -> {
+                    val annotatedString = buildAnnotatedString {
+                        var startIndex = 0
+                        var endIndex: Int
+                        var currentIndex = 0
+
+                        while (currentIndex < processedLine.length) {
+                            val startBold = processedLine.indexOf("**", currentIndex)
+                            if (startBold == -1) {
+                                append(processedLine.substring(currentIndex))
+                                break
+                            }
+                            append(processedLine.substring(currentIndex, startBold))
+                            endIndex = processedLine.indexOf("**", startBold + 2)
+                            if (endIndex == -1) {
+                                append(processedLine.substring(startBold))
+                                break
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    color = CustomGreenColor,
+                                    fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                                )
+                            ) {
+                                append(processedLine.substring(startBold + 2, endIndex))
+                            }
+                            currentIndex = endIndex + 2
+                        }
+                    }
+
+                    Text(
+                        text = annotatedString,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    )
+                }
+            }
+
+            if (index == lines.lastIndex && insideCodeBlock) {
+                if (languageTag.isNotEmpty()) {
+                    Text(
+                        text = "$languageTag code",
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = codeBlockContent.toString(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = MaterialTheme.typography.bodyMedium.fontFamily,
+                            fontSize = 14.sp,
+                            lineHeight = 20.sp
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+        }
     }
 }
