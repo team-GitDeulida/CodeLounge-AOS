@@ -9,9 +9,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,10 +84,14 @@ fun ContentsDetails(content: String) {
 
                         while (currentIndex < processedLine.length) {
                             val startBold = processedLine.indexOf("**", currentIndex)
-                            if (startBold == -1) {
+                            val startHighlight = processedLine.indexOf("##", currentIndex)
+
+                            if (startBold == -1 && startHighlight == -1) {
                                 append(processedLine.substring(currentIndex))
                                 break
                             }
+
+                            if (startBold != -1 && (startHighlight == -1 || startBold < startHighlight)) {
                             append(processedLine.substring(currentIndex, startBold))
                             endIndex = processedLine.indexOf("**", startBold + 2)
                             if (endIndex == -1) {
@@ -101,8 +107,25 @@ fun ContentsDetails(content: String) {
                             ) {
                                 append(processedLine.substring(startBold + 2, endIndex))
                             }
+                                currentIndex = endIndex + 2
+                            } else {
+                                append(processedLine.substring(currentIndex, startHighlight))
+                                endIndex = processedLine.indexOf("##", startHighlight + 2)
+                                if (endIndex == -1) {
+                                    append(processedLine.substring(startHighlight))
+                                    break
+                                }
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                                        textDecoration = TextDecoration.Underline
+                                    )
+                                ) {
+                                    append(processedLine.substring(startHighlight + 2, endIndex))
+                                }
                             currentIndex = endIndex + 2
                         }
+                    }
                     }
 
                     Text(
