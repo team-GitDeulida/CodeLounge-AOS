@@ -13,7 +13,7 @@ fun NavigationGraph(
     firebaseViewModel: FirebaseViewModel,
     loginRepository: LoginRepository
 ) {
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "home") {
         composable("login") {
             LoginScreen(navController, loginRepository)
         }

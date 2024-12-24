@@ -21,7 +21,7 @@ fun AppBar(selectedIndex: Int) {
         0 -> "CS"
         1 -> "Android"
         2 -> "iOS"
-        3 -> "Frontend"
+        3 -> "Web"
         else -> "CS"
     }
 

@@ -13,6 +13,6 @@ class BottomNavViewModel : ViewModel() {
         BottomNavItem(label = "CS", icon = Icons.Filled.School, route = "home"), // Computer Science 관련 아이콘
         BottomNavItem(label = "Android", icon = Icons.Filled.Android, route = "android"), // Android 아이콘
         BottomNavItem(label = "iOS", icon = Icons.Filled.PhoneIphone, route = "ios"), // iOS 아이콘
-        BottomNavItem(label = "Frontend", icon = Icons.Filled.Web, route = "frontend") // Frontend 관련 아이콘
+        BottomNavItem(label = "Web", icon = Icons.Filled.Web, route = "Web") // Frontend 관련 아이콘
     )
 }

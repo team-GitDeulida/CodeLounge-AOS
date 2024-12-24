@@ -16,7 +16,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import codelounge.app.com.theme.BackgroundColor
 import codelounge.app.com.theme.CustomGreenColor
 
 @Composable

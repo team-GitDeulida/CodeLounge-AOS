@@ -1,6 +1,7 @@
 // LifeCycleListScreen.kt
 package codelounge.app.com.View
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.clickable
@@ -59,7 +60,8 @@ fun LifeCycleListScreen(
                                     .fillMaxWidth()
                                     .padding(16.dp)
                                     .clickable {
-                                        navController.navigate("listContents/${item.title}/${item.content}")
+                                        val encodedContent = Uri.encode(item.content) // 인코딩
+                                        navController.navigate("listContents/${item.title}/$encodedContent")
                                     }
                             )
                             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
