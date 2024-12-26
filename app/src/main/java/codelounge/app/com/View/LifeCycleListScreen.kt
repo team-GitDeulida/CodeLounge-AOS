@@ -1,4 +1,3 @@
-// LifeCycleListScreen.kt
 package codelounge.app.com.View
 
 import android.net.Uri
@@ -27,7 +26,8 @@ import codelounge.app.com.theme.CustomGreenColor
 fun LifeCycleListScreen(
     navController: NavController,
     viewModel: LifeCycleViewModel = viewModel(),
-    firebaseData: Map<String, Any?>
+    firebaseData: Map<String, Any?>,
+    searchQuery: String
 ) {
     LaunchedEffect(firebaseData) {
         viewModel.loadData(firebaseData)
@@ -36,6 +36,10 @@ fun LifeCycleListScreen(
     Log.d("NavController", "Current route: $firebaseData")
     val sections by viewModel.firebaseSections.collectAsState()
 
+    val filteredSections = sections.map { section ->
+        section.copy(items = section.items.filter { it.title.contains(searchQuery, ignoreCase = true) })
+    }.filter { it.items.isNotEmpty() }
+
     when {
         sections.isEmpty() -> {
             Text("No data available", modifier = Modifier.padding(16.dp))
@@ -43,7 +47,7 @@ fun LifeCycleListScreen(
 
         else -> {
             LazyColumn {
-                items(sections) { section ->
+                items(filteredSections) { section ->
                     Text(
                         text = section.sectionTitle,
                         style = MaterialTheme.typography.headlineSmall.copy(color = CustomGreenColor),

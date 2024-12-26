@@ -23,6 +23,7 @@ fun CombineScreen(
     navigationViewModel: NavigationViewModel = viewModel()
 ) {
     val topNavController = rememberNavController()
+    var searchQuery by rememberSaveable { mutableStateOf("") }
     val navBackStackEntry by topNavController.currentBackStackEntryAsState()
 
     LaunchedEffect(Unit) {
@@ -39,7 +40,7 @@ fun CombineScreen(
                     val title = navBackStackEntry?.arguments?.getString("title") ?: ""
                     ContentsAppBar(navController = topNavController, title = title)
                 }
-                else -> AppBar(selectedIndex = selectedIndex)
+                else -> AppBar(selectedIndex = selectedIndex, onSearchQueryChanged = { searchQuery = it })
             }
         },
         bottomBar = {
@@ -63,25 +64,29 @@ fun CombineScreen(
                 composable("lifeCycleList") {
                     LifeCycleListScreen(
                         navController = topNavController,
-                        firebaseData = firebaseData.filterKeys { it == "Algorithms" }
+                        firebaseData = firebaseData.filterKeys { it == "Algorithms" },
+                        searchQuery = searchQuery
                     )
                 }
                 composable("kotlinList") {
                     LifeCycleListScreen(
                         navController = topNavController,
-                        firebaseData = firebaseData.filterKeys { it in listOf("Kotlin","Android Component") }
+                        firebaseData = firebaseData.filterKeys { it in listOf("Kotlin", "Android Component", "Android Architecture", "Jetpack Compose UI") },
+                        searchQuery = searchQuery
                     )
                 }
                 composable("swiftUIList") {
                     LifeCycleListScreen(
                         navController = topNavController,
-                        firebaseData = firebaseData.filterKeys { it in listOf("Swift","SwiftUI", "UIKit") }
+                        firebaseData = firebaseData.filterKeys { it in listOf("Swift", "SwiftUI", "UIKit") },
+                        searchQuery = searchQuery
                     )
                 }
                 composable("webList") {
                     LifeCycleListScreen(
                         navController = topNavController,
-                        firebaseData = firebaseData.filterKeys { it in listOf("HTML", "CSS", "JavaScript") }
+                        firebaseData = firebaseData.filterKeys { it in listOf("HTML", "CSS", "JavaScript") },
+                        searchQuery = searchQuery
                     )
                 }
                 composable(
@@ -102,5 +107,4 @@ fun CombineScreen(
             }
         }
     }
-
 }
