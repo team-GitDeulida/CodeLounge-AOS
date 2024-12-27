@@ -1,14 +1,11 @@
 package codelounge.app.com.View
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,7 +17,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -85,6 +81,7 @@ fun AppBar(selectedIndex: Int, onSearchQueryChanged: (String) -> Unit) {
                             .padding(horizontal = 8.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
+                        if (isSearchVisible) {
                             BasicTextField(
                                 value = text,
                                 onValueChange = {
@@ -93,16 +90,17 @@ fun AppBar(selectedIndex: Int, onSearchQueryChanged: (String) -> Unit) {
                                 },
                                 textStyle = TextStyle(color = Color.White),
                                 singleLine = true,
-                            decorationBox = { innerTextField ->
-                                if (text.isEmpty()) {
-                                    Text(
-                                        text = "검색하기..",
-                                        style = TextStyle(color = Color.Gray)
+                                decorationBox = { innerTextField ->
+                                    if (text.isEmpty()) {
+                                        Text(
+                                            text = "검색하기..",
+                                            style = TextStyle(color = Color.Gray)
+                                        )
+                                    }
+                                    innerTextField()
+                                }
                             )
                         }
-                                innerTextField()
-                            }
-                        )
                     }
                     Icon(
                         imageVector = Icons.Default.Search,
@@ -110,7 +108,13 @@ fun AppBar(selectedIndex: Int, onSearchQueryChanged: (String) -> Unit) {
                         tint = WhiteTextColor,
                         modifier = Modifier
                             .padding(start = 8.dp)
-                            .clickable { isSearchVisible = !isSearchVisible }
+                            .clickable {
+                                isSearchVisible = !isSearchVisible
+                                if (!isSearchVisible) {
+                                    text = ""
+                                    onSearchQueryChanged("")
+                                }
+                            }
                     )
                 }
             }
