@@ -53,7 +53,6 @@ fun CombineScreen(
                         0 -> topNavController.navigate("lifeCycleList")
                         1 -> topNavController.navigate("kotlinList")
                         2 -> topNavController.navigate("swiftUIList")
-                        3 -> topNavController.navigate("webList")
                     }
                 },
             )
@@ -79,13 +78,6 @@ fun CombineScreen(
                     LifeCycleListScreen(
                         navController = topNavController,
                         firebaseData = firebaseData.filterKeys { it in listOf("Swift", "SwiftUI", "UIKit") },
-                        searchQuery = searchQuery
-                    )
-                }
-                composable("webList") {
-                    LifeCycleListScreen(
-                        navController = topNavController,
-                        firebaseData = firebaseData.filterKeys { it in listOf("HTML", "CSS", "JavaScript") },
                         searchQuery = searchQuery
                     )
                 }
