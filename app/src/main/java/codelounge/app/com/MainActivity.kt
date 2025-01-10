@@ -9,7 +9,6 @@ import codelounge.app.com.Model.FirebaseRepository
 import codelounge.app.com.Model.LoginRepository
 import codelounge.app.com.View.NavigationGraph
 import codelounge.app.com.ViewModel.FirebaseViewModel
-import codelounge.app.com.ViewModel.ListContentsViewModel
 import codelounge.app.com.theme.CodeLoungeTheme
 import codelounge.app.com.ViewModel.FirebaseViewModelFactory
 import com.google.firebase.database.FirebaseDatabase
