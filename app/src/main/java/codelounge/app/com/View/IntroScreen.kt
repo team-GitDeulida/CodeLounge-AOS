@@ -28,6 +28,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.text.style.TextAlign
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -74,8 +77,20 @@ fun Introscreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundColor)
-            .padding(16.dp)
+            .padding(5.dp)
     ) {
+        if (currentPage < pages.size - 1) {
+            Text(
+                text = "Skip",
+                style = MaterialTheme.typography.bodyMedium.copy(color = Color.White),
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(16.dp)
+                    .clickable {
+                        currentPage = pages.size - 1
+                    }
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -134,7 +149,27 @@ fun Introscreen(navController: NavController) {
                 Text(
                     text = contentText,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.surfaceVariant
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        // 페이지 인디케이터
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 80.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            pages.forEachIndexed { index, _ ->
+                Box(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .size(if (index == currentPage) 12.dp else 8.dp)
+                        .background(
+                            color = if (index == currentPage) Color.White else Color.Gray,
+                            shape = CircleShape
+                        )
                 )
             }
         }
@@ -158,10 +193,16 @@ fun Introscreen(navController: NavController) {
                 .padding(bottom = 16.dp)
                 .fillMaxWidth(0.5f)
         ) {
-            Text(text = if (currentPage < pages.size - 1) "Continue" else "Login into PS App", color = Color.Black)
+            Text(
+                text = if (currentPage < pages.size - 1) "Continue" else "Login into PS App",
+                color = Color.Black
+            )
         }
+        Spacer(modifier = Modifier.height(20.dp))
+
     }
 }
+
 
 
 
