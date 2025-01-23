@@ -1,4 +1,4 @@
-package codelounge.app.com.viewmodel
+package codelounge.app.com.ViewModel
 
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Eco
