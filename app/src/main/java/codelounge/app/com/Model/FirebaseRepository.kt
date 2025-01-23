@@ -13,7 +13,7 @@ class FirebaseRepository(private val database: DatabaseReference) {
     fun fetchFirebaseData(): Flow<Map<String, Any?>> = callbackFlow {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val data = snapshot.children.associate { it.key!! to it.value }
+                val data = snapshot.child("Posts").children.associate { it.key!! to it.value }
                 trySend(data).isSuccess
             }
 
