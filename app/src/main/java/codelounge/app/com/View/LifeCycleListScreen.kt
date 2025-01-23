@@ -50,7 +50,6 @@ fun LifeCycleListScreen(
         viewModel.loadData(firebaseData)
     }
 
-    Log.d("NavController", "Current route: $firebaseData")
     val sections by viewModel.firebaseSections.collectAsState()
 
     val filteredSections = sections.map { section ->
