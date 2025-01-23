@@ -23,17 +23,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import codelounge.app.com.theme.BackgroundColor
 import codelounge.app.com.theme.WhiteTextColor
-import kotlinx.coroutines.delay
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import codelounge.app.com.viewmodel.IntroViewModel
+import codelounge.app.com.ViewModel.IntroViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Introscreen(navController: NavController, introViewModel: IntroViewModel = viewModel()) {
+fun Introscreen(navController: NavController, introViewModel: IntroViewModel) {
     val pages = introViewModel.pages
     val content = introViewModel.content
     val icons = introViewModel.icons
