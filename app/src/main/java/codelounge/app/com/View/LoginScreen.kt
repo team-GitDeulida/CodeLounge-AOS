@@ -6,15 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import codelounge.app.com.Model.LoginRepository
@@ -28,6 +24,7 @@ fun LoginScreen(navController: NavController, repository: LoginRepository) {
     val loginViewModel: LoginViewModel = viewModel(
         factory = LoginViewModelFactory(repository)
     )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,17 +33,19 @@ fun LoginScreen(navController: NavController, repository: LoginRepository) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(2.5f))
-
-        Text("Code Lounge", fontSize = 50.sp, color = Color.White)
+        Title()
         Spacer(modifier = Modifier.weight(3f))
-        GithubLoginButton(navController = navController)
-        Spacer(modifier = Modifier.height(10.dp))
-        GoogleLoginButton(navController = navController)
+        GoogleLoginButton(navController = navController, loginViewModel = loginViewModel)
         Spacer(modifier = Modifier.weight(1f))
     }
-
-    val loginStatus by loginViewModel.loginStatus.collectAsState()
-    if (loginStatus.isNotEmpty()) {
-        println(loginStatus) // 디버그 출력 (필요시 Dialog나 Toast로 변경 가능)
-    }
 }
+
+@Composable
+fun Title() {
+    Text(
+        text = "Code Lounge",
+        fontSize = 50.sp,
+        color = Color.White
+    )
+}
+

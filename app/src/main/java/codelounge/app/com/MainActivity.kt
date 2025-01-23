@@ -30,7 +30,8 @@ class MainActivity : ComponentActivity() {
                 NavigationGraph(
                     navController = navController,
                     firebaseViewModel = viewModel,
-                    loginRepository = loginRepository
+                    loginRepository = loginRepository,
+                    introViewModel = viewModel()
                 )
             }
         }
