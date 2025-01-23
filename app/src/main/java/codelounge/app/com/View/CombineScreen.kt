@@ -40,6 +40,7 @@ fun CombineScreen(
                     val title = navBackStackEntry?.arguments?.getString("title") ?: ""
                     ContentsAppBar(navController = topNavController, title = title)
                 }
+                "profile" -> {} // 프로필 화면에서는 topBar를 숨깁니다.
                 else -> AppBar(selectedIndex = selectedIndex, onSearchQueryChanged = { searchQuery = it })
             }
         },
@@ -50,17 +51,18 @@ fun CombineScreen(
                 onItemSelected = { index ->
                     navigationViewModel.selectIndex(index)
                     when (index) {
-                        0 -> topNavController.navigate("lifeCycleList")
+                        0 -> topNavController.navigate("CSList")
                         1 -> topNavController.navigate("kotlinList")
                         2 -> topNavController.navigate("swiftUIList")
+                        3 -> topNavController.navigate("profile")
                     }
-                },
+                }
             )
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            NavHost(navController = topNavController, startDestination = "lifeCycleList") {
-                composable("lifeCycleList") {
+            NavHost(navController = topNavController, startDestination = "CSList") {
+                composable("CSList") {
                     LifeCycleListScreen(
                         navController = topNavController,
                         firebaseData = firebaseData.filterKeys { it == "Algorithms" },
@@ -80,6 +82,9 @@ fun CombineScreen(
                         firebaseData = firebaseData.filterKeys { it in listOf("Swift", "SwiftUI", "UIKit") },
                         searchQuery = searchQuery
                     )
+                }
+                composable("profile") {
+                    ProfileScreen()
                 }
                 composable(
                     route = "listContents/{title}/{content}",

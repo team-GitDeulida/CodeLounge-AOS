@@ -40,7 +40,6 @@ fun AppBar(selectedIndex: Int, onSearchQueryChanged: (String) -> Unit) {
         0 -> "CS"
         1 -> "Android"
         2 -> "iOS"
-        3 -> "Web"
         else -> "CS"
     }
 
