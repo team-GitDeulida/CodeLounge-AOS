@@ -80,8 +80,13 @@ fun LifeCycleListScreen(
                             .fillMaxWidth()
                             .padding(start = 16.dp, top = 8.dp, bottom = 4.dp)
                     )
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        section.items.asReversed().forEach { item ->
+                    Column(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(14.dp))
+                        .padding(9.dp)
+                    ) {
+                        section.items.asReversed().forEachIndexed { index, item ->
                             Text(
                                 text = item.title,
                                 style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
@@ -93,6 +98,7 @@ fun LifeCycleListScreen(
                                         navController.navigate("listContents/${item.title}/$encodedContent")
                                     }
                             )
+                            if (index < section.items.size - 1) {
                             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                         }
                     }
@@ -100,6 +106,7 @@ fun LifeCycleListScreen(
             }
         }
     }
+}
 }
 
 @Composable
@@ -121,6 +128,13 @@ fun SkeletonSection() {
             Spacer(modifier = Modifier.height(10.dp))
 
             // 반복되는 아이템 Skeleton
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(14.dp))
+                    .padding(9.dp)
+            ) {
             repeat(7) {
                 Box(
                     modifier = Modifier
@@ -139,6 +153,7 @@ fun SkeletonSection() {
             }
         }
     }
+}
 }
 
 fun Modifier.shimmerEffect(): Modifier = composed {
