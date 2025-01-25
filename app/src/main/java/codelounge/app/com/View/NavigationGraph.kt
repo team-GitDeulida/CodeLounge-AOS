@@ -8,7 +8,6 @@ import codelounge.app.com.Model.LoginRepository
 import codelounge.app.com.ViewModel.FirebaseViewModel
 import codelounge.app.com.ViewModel.IntroViewModel
 
-
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
@@ -24,7 +23,7 @@ fun NavigationGraph(
             LoginScreen(navController, loginRepository)
         }
         composable("home") {
-            CombineScreen(firebaseViewModel)
+            CombineScreen(navController, firebaseViewModel)
         }
         composable("signIn") {
             SignInDetails(navController, loginRepository)

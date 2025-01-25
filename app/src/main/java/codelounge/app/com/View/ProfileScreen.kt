@@ -19,10 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import codelounge.app.com.Model.LoginRepository
 import codelounge.app.com.ViewModel.LoginViewModel
 import codelounge.app.com.ViewModel.LoginViewModelFactory
@@ -34,7 +34,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController) {
     val loginRepository = LoginRepository()
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(loginRepository))
     val user by loginViewModel.user.collectAsState()
@@ -55,7 +55,7 @@ fun ProfileScreen() {
         Text(
             text = "My Page",
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(top = 16.dp,bottom = 16.dp, start = 16.dp)
+            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp, start = 16.dp)
         )
 
         // User Info Section
@@ -74,11 +74,14 @@ fun ProfileScreen() {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                Text(
-                    text = it.nickname ?: "N/A",
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold, color = WhiteTextColor),
+                    Text(
+                        text = it.nickname ?: "N/A",
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = WhiteTextColor
+                        ),
                         modifier = Modifier.weight(1f)
-                )
+                    )
                     Icon(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
@@ -88,24 +91,28 @@ fun ProfileScreen() {
                     )
                 }
                 Text(
-                    text = "CodeLounge ${it.registerDate?.let { registerDate -> 
-                        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-                        val registerDateParsed = sdf.parse(registerDate)
-                        val diff = (Date().time - registerDateParsed.time) / (1000 * 60 * 60 * 24)
-                        diff.toString()
-                    } ?: "0"}일 째",
+                    text = "CodeLounge ${
+                        it.registerDate?.let { registerDate ->
+                            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+                            val registerDateParsed = sdf.parse(registerDate)
+                            val diff =
+                                (Date().time - registerDateParsed.time) / (1000 * 60 * 60 * 24)
+                            diff.toString()
+                        } ?: "0"
+                    }일 째",
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = WhiteTextColor))
+                        color = WhiteTextColor
+                    ))
             }
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Settings Section
+        // Setting Section
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface,shape = RoundedCornerShape(14.dp))
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(14.dp))
                 .padding(10.dp)
         ) {
             SettingItem("공지사항") {
@@ -120,7 +127,7 @@ fun ProfileScreen() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface,shape = RoundedCornerShape(14.dp))
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(14.dp))
                 .padding(9.dp)
         ) {
             SettingItem("개인정보처리방침") {
@@ -135,14 +142,31 @@ fun ProfileScreen() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface,shape = RoundedCornerShape(14.dp))
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(14.dp))
                 .padding(9.dp)
         ) {
             SettingItem("계정탈퇴") {
-                // Handle account deletion
+                val currentUser = FirebaseAuth.getInstance().currentUser
+                currentUser?.let { user ->
+                    val userId = user.uid
+                    user.delete().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val database = LoginRepository().database
+                            database.child("Users").child(userId).removeValue()
+                                .addOnCompleteListener { dbTask ->
+                                    if (dbTask.isSuccessful) {
+                                        navController.navigate("login") {
+                                            popUpTo(0) { inclusive = true }
+                                        }
+                                    } else {
+                                        // Handle error if necessary
+                                    }
+                                }
+                        }
+                    }
+                }
             }
         }
-
         Spacer(modifier = Modifier.height(24.dp))
 
         // Logout Button
@@ -154,7 +178,10 @@ fun ProfileScreen() {
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
-                    // Handle logout
+                    FirebaseAuth.getInstance().signOut()
+                    navController.navigate("login") {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
         )
     }
@@ -175,16 +202,4 @@ fun SettingItem(title: String, onClick: () -> Unit) {
             modifier = Modifier.weight(1f)
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProfileScreenPreview() {
-    ProfileScreen()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SettingItemPreview() {
-    SettingItem(title = "Account Settings") {}
 }

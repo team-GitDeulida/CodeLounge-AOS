@@ -3,26 +3,35 @@ package codelounge.app.com.View
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import codelounge.app.com.Model.LoginRepository
 import codelounge.app.com.ViewModel.BottomNavViewModel
 import codelounge.app.com.ViewModel.FirebaseViewModel
 import codelounge.app.com.ViewModel.NavigationViewModel
 
 @Composable
 fun CombineScreen(
+    navController: NavHostController,
     firebaseViewModel: FirebaseViewModel = viewModel(),
     navigationViewModel: NavigationViewModel = viewModel()
 ) {
     val topNavController = rememberNavController()
+
     var searchQuery by rememberSaveable { mutableStateOf("") }
     val navBackStackEntry by topNavController.currentBackStackEntryAsState()
 
@@ -84,8 +93,12 @@ fun CombineScreen(
                     )
                 }
                 composable("profile") {
-                    ProfileScreen()
+                    ProfileScreen(navController)
                 }
+                composable("login") {
+                    LoginScreen(navController = topNavController,LoginRepository())
+                }
+
                 composable(
                     route = "listContents/{title}/{content}",
                     arguments = listOf(
