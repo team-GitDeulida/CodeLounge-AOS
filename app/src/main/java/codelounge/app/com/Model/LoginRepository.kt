@@ -9,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 class LoginRepository {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val database = FirebaseDatabase.getInstance().reference
+    val database = FirebaseDatabase.getInstance().reference
 
     // Firebase Authentication: Google Login
     suspend fun googleSignIn(account: GoogleSignInAccount): String? {
