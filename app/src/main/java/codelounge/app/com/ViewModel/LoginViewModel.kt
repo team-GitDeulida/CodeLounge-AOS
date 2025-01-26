@@ -112,6 +112,27 @@ class LoginViewModel(private val repository: LoginRepository) : ViewModel() {
         }
     }
 
+    fun updateUserData(nickname: String, birthdate: String, gender: String) {
+        viewModelScope.launch {
+            _signInState.value = SignInState.Loading
+            val userId = FirebaseAuth.getInstance().currentUser?.uid!!
+            if (userId != null) {
+                val user = mapOf(
+                    "nickname" to nickname,
+                    "birthdayDate" to birthdate,
+                    "gender" to gender,
+                )
+                val success = repository.saveUserData(userId, user)
+                if (success) {
+                    fetchUserData(userId)
+                    _signInState.value = SignInState.Success
+                } else {
+                    _signInState.value = SignInState.Error("데이터 저장 실패")
+                }
+            }
+        }
+    }
+
     fun checkUserData(userId: String) {
         viewModelScope.launch {
             val userData = repository.fetchUserData(userId)

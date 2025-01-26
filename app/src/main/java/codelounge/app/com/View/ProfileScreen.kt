@@ -1,5 +1,6 @@
 package codelounge.app.com.View
 
+import android.app.AlertDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,13 +33,16 @@ import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun ProfileScreen(navController: NavController) {
     val loginRepository = LoginRepository()
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(loginRepository))
     val user by loginViewModel.user.collectAsState()
-
+    val context = LocalContext.current
     // Fetch the current user data
     val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
     LaunchedEffect(currentUserId) {
@@ -67,7 +71,7 @@ fun ProfileScreen(navController: NavController) {
                     .border(2.dp, Color.Gray, shape = RoundedCornerShape(14.dp)) // 테두리 추가 및 라운드 처리
                     .padding(14.dp)
                     .clickable(onClick = {
-                        // Navigate to Edit Profile
+                        navController.navigate("ChangeProfile")
                     })
             ) {
                 Row(
@@ -116,7 +120,11 @@ fun ProfileScreen(navController: NavController) {
                 .padding(10.dp)
         ) {
             SettingItem("공지사항") {
-                // Navigate to Notice
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://deciduous-jam-49e.notion.site/187db9e736cf80338153e18e787c89cb")
+                )
+                context.startActivity(intent)
             }
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             SettingItem("문의하기") {
@@ -131,7 +139,11 @@ fun ProfileScreen(navController: NavController) {
                 .padding(9.dp)
         ) {
             SettingItem("개인정보처리방침") {
-                // Navigate to Privacy Policy
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.notion.so/187db9e736cf804babdcd87e525df104?pvs=4")
+                )
+                context.startActivity(intent)
             }
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             SettingItem("버전정보") {
@@ -149,43 +161,51 @@ fun ProfileScreen(navController: NavController) {
                 val currentUser = FirebaseAuth.getInstance().currentUser
                 currentUser?.let { user ->
                     val userId = user.uid
-                    user.delete().addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val database = LoginRepository().database
-                            database.child("Users").child(userId).removeValue()
-                                .addOnCompleteListener { dbTask ->
-                                    if (dbTask.isSuccessful) {
-                                        navController.navigate("login") {
-                                            popUpTo(0) { inclusive = true }
+                    AlertDialog.Builder(context)
+                        .setTitle("계정 탈퇴")
+                        .setMessage("정말로 계정을 탈퇴하시겠습니까?")
+                        .setPositiveButton("예") { _, _ ->
+                            user.delete().addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val database = LoginRepository().database
+                                    database.child("Users").child(userId).removeValue()
+                                        .addOnCompleteListener { dbTask ->
+                                            if (dbTask.isSuccessful) {
+                                                navController.navigate("login") {
+                                                    popUpTo(0) { inclusive = true }
+                                                }
+                                            } else {
+                                                // Handle error if necessary
+                                            }
                                         }
-                                    } else {
-                                        // Handle error if necessary
-                                    }
                                 }
+                            }
                         }
-                    }
+                        .setNegativeButton("아니오", null)
+                        .show()
                 }
             }
         }
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        // Logout Button
-        Text(
-            text = "로그아웃",
-            color = Color.Red,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .clickable {
-                    FirebaseAuth.getInstance().signOut()
-                    navController.navigate("login") {
-                        popUpTo(0) { inclusive = true }
+            // Logout Button
+            Text(
+                text = "로그아웃",
+                color = Color.Red,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clickable {
+                        FirebaseAuth.getInstance().signOut()
+                        navController.navigate("login") {
+                            popUpTo(0) { inclusive = true }
+                        }
                     }
-                }
-        )
+            )
+        }
     }
-}
+
 
 @Composable
 fun SettingItem(title: String, onClick: () -> Unit) {
