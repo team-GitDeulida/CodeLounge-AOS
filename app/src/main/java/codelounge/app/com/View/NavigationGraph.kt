@@ -28,5 +28,8 @@ fun NavigationGraph(
         composable("signIn") {
             SignInDetails(navController, loginRepository)
         }
+        composable("ChangeProfile") {
+            ChangeProfileScreen(navController, loginRepository)
+        }
     }
 }
