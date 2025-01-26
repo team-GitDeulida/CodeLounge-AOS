@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,13 +22,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Brush
@@ -53,7 +58,12 @@ fun LifeCycleListScreen(
     val sections by viewModel.firebaseSections.collectAsState()
 
     val filteredSections = sections.map { section ->
-        section.copy(items = section.items.filter { it.title.contains(searchQuery, ignoreCase = true) })
+        section.copy(items = section.items.filter {
+            it.title.contains(
+                searchQuery,
+                ignoreCase = true
+            )
+        })
     }.filter { it.items.isNotEmpty() }
 
     when {
@@ -66,7 +76,7 @@ fun LifeCycleListScreen(
         }
 
         sections.isEmpty() -> {
-                SkeletonSection()
+            SkeletonSection()
 
         }
 
@@ -80,26 +90,41 @@ fun LifeCycleListScreen(
                             .fillMaxWidth()
                             .padding(start = 16.dp, top = 8.dp, bottom = 4.dp)
                     )
-                    Column(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(14.dp))
-                        .padding(9.dp)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                            .background(
+                                MaterialTheme.colorScheme.surface,
+                                shape = RoundedCornerShape(14.dp)
+                            )
+                            .padding(9.dp)
                     ) {
                         section.items.asReversed().forEachIndexed { index, item ->
-                            Text(
-                                text = item.title,
-                                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(16.dp)
+                                    .padding(6.dp)
                                     .clickable {
                                         val encodedContent = Uri.encode(item.content) // 인코딩
                                         navController.navigate("listContents/${item.title}/$encodedContent")
-                                    }
-                            )
+                                    },
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = item.title,
+                                    style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+                                    modifier = Modifier.weight(1f)
+                                )
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForward,
+                                    contentDescription = null,
+                                    modifier = Modifier.padding(start = 8.dp)
+                                )
+                            }
                             if (index < section.items.size - 1) {
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                            }
                         }
                     }
                 }
@@ -107,13 +132,13 @@ fun LifeCycleListScreen(
         }
     }
 }
-}
+
 
 @Composable
 fun SkeletonSection() {
     Column(modifier = Modifier.padding(8.dp)) { // Section의 전체 레이아웃 조정
         // Section Title Skeleton
-        repeat(2) {
+        repeat(1) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -125,17 +150,15 @@ fun SkeletonSection() {
                     )
                     .shimmerEffect()
             )
-            Spacer(modifier = Modifier.height(10.dp))
-
             // 반복되는 아이템 Skeleton
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 20.dp)
                     .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(14.dp))
                     .padding(9.dp)
             ) {
-            repeat(7) {
+            repeat(15) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
