@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Code Lounge</string>
+    <string name="app_name">코드 라운지</string>
+    <string name="app_banner">Code lounge</string>
 </resources>

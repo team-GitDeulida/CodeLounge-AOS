@@ -55,7 +55,7 @@ fun ProfileScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-    ) {
+        ) {
         Text(
             text = "My Page",
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
@@ -128,7 +128,11 @@ fun ProfileScreen(navController: NavController) {
             }
             Divider(modifier = Modifier.padding(vertical = 8.dp))
             SettingItem("문의하기") {
-                // Navigate to Inquiry
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://open.kakao.com/o/gAvOkHch")
+                )
+                context.startActivity(intent)
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
@@ -146,7 +150,7 @@ fun ProfileScreen(navController: NavController) {
                 context.startActivity(intent)
             }
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            SettingItem("버전정보") {
+            VersionItem("버전정보","1.0.0"){
                 // Navigate to Version Info
             }
         }
@@ -220,6 +224,28 @@ fun SettingItem(title: String, onClick: () -> Unit) {
             text = title,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+fun VersionItem(title: String, version: String,onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 9.dp)
+            .clickable(onClick = onClick)
+
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = version,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.align(Alignment.CenterVertically)
         )
     }
 }
