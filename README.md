@@ -26,7 +26,7 @@
 <br>
 
 |인트로화면|로그인|메인화면|
-|:---:|:---:|:---:|:---:|
+|:---:|:---:|:---:|
 |<img src="https://github.com/user-attachments/assets/b3318eae-ee25-4330-9ad9-8c0a61999272" width="300">|<img src="https://github.com/user-attachments/assets/1dda4c1e-bb2a-4069-8ded-12efc09c4feb" width="300">|<img src="https://github.com/user-attachments/assets/2026970e-4eac-4324-ab84-a14a7b302d91" width="300">|
 <br>
 
