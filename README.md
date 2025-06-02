@@ -3,7 +3,8 @@
 
 <p align="center">
   <br>
-  <img src="">
+  <img src="![image](https://github.com/user-attachments/assets/ef0aed17-89b8-483c-a1d2-993f9e4c536e)
+">
   <br>
 </p>
 
@@ -27,7 +28,7 @@
 
 |인트로화면|로그인|메인화면|
 |:---:|:---:|:---:|
-|<img src="https://github.com/user-attachments/assets/b3318eae-ee25-4330-9ad9-8c0a61999272" width="300">|<img src="https://github.com/user-attachments/assets/1dda4c1e-bb2a-4069-8ded-12efc09c4feb" width="300">|<img src="https://github.com/user-attachments/assets/2026970e-4eac-4324-ab84-a14a7b302d91" width="300">|
+|<img src="https://github.com/user-attachments/assets/b3318eae-ee25-4330-9ad9-8c0a61999272" width="300">|<img src="https://github.com/user-attachments/assets/1dda4c1e-bb2a-4069-8ded-12efc09c4feb" width="300">|<img src="https://github.com/user-attachments/assets/9d873c40-38dd-450e-9b4c-84cbb7535365" width="300">|
 <br>
 
 
