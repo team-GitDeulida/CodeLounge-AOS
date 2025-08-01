@@ -150,7 +150,7 @@ fun ProfileScreen(navController: NavController) {
                 context.startActivity(intent)
             }
             Divider(modifier = Modifier.padding(vertical = 8.dp))
-            VersionItem("버전정보","1.0.0"){
+            VersionItem("버전정보","1.0.1"){
                 // Navigate to Version Info
             }
         }
