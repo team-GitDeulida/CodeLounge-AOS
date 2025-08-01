@@ -1,23 +1,36 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
 }
+val localProps = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        this.load(file.inputStream())
+    }
+}
+val admobAppId = localProps.getProperty("admobAppId") ?: error("admobAppId not found")
+val admobBannerId = localProps.getProperty("admobBannerId") ?: error("Missing admobBannerId")
 
 android {
     namespace = "codelounge.app.com"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "codelounge.app.com"
         minSdk = 30
-        //noinspection OldTargetApi
-        targetSdk = 34
-        versionCode = 2
-        versionName = "1.0.1"
+        targetSdk = 35
+        versionCode = 3
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["ADMOB_APP_ID"] = admobAppId
+
+        buildConfigField("String", "ADMOB_BANNER_ID", "\"$admobBannerId\"")
     }
 
     buildTypes {
@@ -38,6 +51,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -68,5 +82,5 @@ dependencies {
     implementation (libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.core.splashscreen)
-
+    implementation(libs.play.services.ads)
 }

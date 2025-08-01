@@ -54,19 +54,22 @@ fun CombineScreen(
             }
         },
         bottomBar = {
-            BottomNavigationBar(
-                items = BottomNavViewModel().items,
-                selectedIndex = selectedIndex,
-                onItemSelected = { index ->
-                    navigationViewModel.selectIndex(index)
-                    when (index) {
-                        0 -> topNavController.navigate("CSList")
-                        1 -> topNavController.navigate("kotlinList")
-                        2 -> topNavController.navigate("swiftUIList")
-                        3 -> topNavController.navigate("profile")
+            Column {
+                AdmobBannerAd() // 광고가 하단바 바로 위에 위치
+                BottomNavigationBar(
+                    items = BottomNavViewModel().items,
+                    selectedIndex = selectedIndex,
+                    onItemSelected = { index ->
+                        navigationViewModel.selectIndex(index)
+                        when (index) {
+                            0 -> topNavController.navigate("CSList")
+                            1 -> topNavController.navigate("kotlinList")
+                            2 -> topNavController.navigate("swiftUIList")
+                            3 -> topNavController.navigate("profile")
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
